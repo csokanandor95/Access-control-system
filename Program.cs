@@ -13,6 +13,7 @@
         }
     }
 
+    static List<Tevekenyseg> tevekenysegek = new(); //tevékenységek listája
     static void ElsoFeladat()
     {
         using (StreamReader sr = new StreamReader("bedat.txt"))
@@ -21,6 +22,11 @@
             {
                 string[] s = sr.ReadLine().Split(" ");
                 
+                string azon = s[0];
+                DateTime ido = Convert.ToDateTime(s[1]);
+                int kod = Convert.ToInt32(s[2]);
+
+                tevekenysegek.Add(new Tevekenyseg(azon, ido, kod));
             }
         }
     static void Main()
