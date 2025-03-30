@@ -56,11 +56,25 @@
             }
         }
     }
+    static void NegyedikFeladat()
+    {
+        Console.WriteLine("4. feladat:");
+        int menzan_ebedlo_db = 0; //menzán ebédelt tanulók száma
+        for (int i = 0; i < tevekenysegek.Count; i++) //végigmegyünk a tevékenységeken (lehetne foreach is, mert csak simán végigmegyünk a listán)
+        {
+            if (tevekenysegek[i].Kod == 3) //ha a kód 3, azaz ebédelt a tanuló
+            {
+                menzan_ebedlo_db++; //növeljük a menzán ebédelt tanulók számát
+            }
+        }
+        Console.WriteLine(menzan_ebedlo_db + " diak ebedelt a menzan aznap."); //kiírjuk a menzán ebédelt tanulók számát
+    }
 
-            static void Main() //program belépési pontja, itt fogjuk meghívni a metódusokat
+        static void Main() //program belépési pontja, itt fogjuk meghívni a metódusokat
     {
         MasodikFeladat();
         HarmadikFeladat();
+        NegyedikFeladat();
     }
 }
 
