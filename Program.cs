@@ -30,12 +30,18 @@
                 tevekenysegek.Add(new Tevekenyseg(azon, ido, kod)); //új tevékenység objektum létrehozása és hozzáadása a listához
             }
         }
-        static void Main() //program belépési pontja, itt fogjuk meghívni a metódusokat
-        {
-            
-        }
-        
+             
+    }
+    static void MasodikFeladat()
+    {
+        Console.WriteLine("2. feladat:");
+        Console.WriteLine($"2. feladat: Az elso tanulo {tevekenysegek[0].Ido.Hour:02}:{tevekenysegek[0].Ido.Minute:02} -kor lepett be a fokapun. "); //2 számjegyű formátumban kell megadni az órát és a percet
+        Console.WriteLine($"2. feladat: Az utolso tanulo {tevekenysegek[tevekenysegek.Count -1].Ido.Hour:02}:{tevekenysegek[tevekenysegek.Count - 1].Ido.Minute:02} -kor lepett be a fokapun. "); //.count-al az utolsó elem indexe megadható max algoritmus helyett
+    }
 
+    static void Main() //program belépési pontja, itt fogjuk meghívni a metódusokat
+    {
+        MasodikFeladat();
     }
 }
 
