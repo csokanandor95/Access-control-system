@@ -30,13 +30,13 @@
                 tevekenysegek.Add(new Tevekenyseg(azon, ido, kod)); //új tevékenység objektum létrehozása és hozzáadása a listához
             }
         }
-             
+
     }
     static void MasodikFeladat()
     {
         Console.WriteLine("2. feladat:"); // $ string interpoláció: idézőjelek közötti szövegben bele lehet ágyazni változókat vagy kifejezéseket anélkül, hogy külön kellene őket összefűzni
         Console.WriteLine($"2. feladat: Az elso tanulo {tevekenysegek[0].Ido.Hour:02}:{tevekenysegek[0].Ido.Minute:02} -kor lepett be a fokapun. "); //2 számjegyű formátumban kell megadni az órát és a percet
-        Console.WriteLine($"2. feladat: Az utolso tanulo {tevekenysegek[tevekenysegek.Count -1].Ido.Hour:02}:{tevekenysegek[tevekenysegek.Count - 1].Ido.Minute:02} -kor lepett be a fokapun. "); //.count-al az utolsó elem indexe megadható max algoritmus helyett
+        Console.WriteLine($"2. feladat: Az utolso tanulo {tevekenysegek[tevekenysegek.Count - 1].Ido.Hour:02}:{tevekenysegek[tevekenysegek.Count - 1].Ido.Minute:02} -kor lepett be a fokapun. "); //.count-al az utolsó elem indexe megadható max algoritmus helyett
     }
 
     static void HarmadikFeladat()
@@ -56,10 +56,12 @@
             }
         }
     }
+
+    static int menzan_ebedlo_db = 0; //osztályszintű változó, hogy a 4. és 5. feladatban is elérhető legyen
     static void NegyedikFeladat()
     {
         Console.WriteLine("4. feladat:");
-        int menzan_ebedlo_db = 0; //menzán ebédelt tanulók száma
+        menzan_ebedlo_db = 0; //menzán ebédelt tanulók száma
         for (int i = 0; i < tevekenysegek.Count; i++) //végigmegyünk a tevékenységeken (lehetne foreach is, mert csak simán végigmegyünk a listán)
         {
             if (tevekenysegek[i].Kod == 3) //ha a kód 3, azaz ebédelt a tanuló
@@ -70,11 +72,37 @@
         Console.WriteLine(menzan_ebedlo_db + " diak ebedelt a menzan aznap."); //kiírjuk a menzán ebédelt tanulók számát
     }
 
-        static void Main() //program belépési pontja, itt fogjuk meghívni a metódusokat
+    static void OtodikFeladat()
     {
-        MasodikFeladat();
-        HarmadikFeladat();
-        NegyedikFeladat();
+        Console.WriteLine("5. feladat:");
+        int kolcsonzokDb = 0;
+        List<string> kolcsonzoDiakok = new(); //kolcsonzok listája
+        for (int i = 0; i < tevekenysegek.Count; i++)
+        {
+            if (tevekenysegek[i].Kod == 4 && !kolcsonzoDiakok.Contains(tevekenysegek[i].Azon)) //kizárjuk a duplikációkat
+            {
+                kolcsonzokDb++;
+                kolcsonzoDiakok.Add(tevekenysegek[i].Azon);
+            }
+        }
+        Console.WriteLine(kolcsonzokDb + " diák kolcsonzoott aznap a konyvtarban.");
+
+        if (kolcsonzokDb > menzan_ebedlo_db)
+        {
+            Console.WriteLine("Tobben voltak, mint a menzan.");
+        }
+        else
+        {
+            Console.WriteLine("Nem voltak tobben, mint a menzan.");
+        }
+
+        static void Main() //program belépési pontja, itt fogjuk meghívni a metódusokat
+        {
+            MasodikFeladat();
+            HarmadikFeladat();
+            NegyedikFeladat();
+            OtodikFeladat();
+        }
     }
 }
 
