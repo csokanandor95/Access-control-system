@@ -118,12 +118,47 @@ class Program
         }
     }
 
+    static void HetedikFeladat()
+    {
+        Console.WriteLine("7. feladat: ");
+        Console.WriteLine("Kerem egy tanulo azonositojat=");
+        string bekertAzon = Console.ReadLine(); //bekérjük egy tanuló azonosítóját
+        DateTime elsoBelepes = new(1, 1, 1);
+
+        for (int i = 0; i < tevekenysegek.Count; i++) //végigmegyünk a tevékenységeken
+        {
+            if (tevekenysegek[i].Azon == bekertAzon) //ha egy tanuló azonosítója megegyezik a bekérttel, akkor a hozzá tartozó időt elmentjük
+            {
+                elsoBelepes = tevekenysegek[i].Ido;
+                break; //ha megvan az első belépés, akkor kilépünk a ciklusból (nincs értelme tovább menni)
+            }
+        }
+
+        DateTime utolsoKilepes = new(1, 1, 1);
+
+        for (int i = tevekenysegek.Count - 1; i >= 0; i--) //végigmegyünk a tevékenységeken visszafelé
+        {
+            if (tevekenysegek[i].Azon == bekertAzon) //ha egy tanuló azonosítója megegyezik a bekérttel, akkor a hozzá tartozó időt elmentjük
+            {
+                utolsoKilepes = tevekenysegek[i].Ido;
+                break; //ha megvan az utolsó kilépés, akkor kilépünk a ciklusból (nincs értelme tovább menni)
+            }
+        }
+
+        TimeSpan elteltIdo = utolsoKilepes - elsoBelepes; //az eltelt idő a két időpont különbsége
+        Console.WriteLine($"A tanulo belepese es kilepese kozott  { elteltIdo.Hours } ora es { elteltIdo.Minutes } perc telt el."  ); //kiírjuk az eltelt időt
+
+    }
+
     static void Main() //program belépési pontja, itt fogjuk meghívni a metódusokat
     {
+        ElsoFeladat();
         MasodikFeladat();
         HarmadikFeladat();
         NegyedikFeladat();
         OtodikFeladat();
+        HatodikFeladat();
+        HetedikFeladat();
     }
 }
 
