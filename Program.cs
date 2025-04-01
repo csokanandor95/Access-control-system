@@ -26,7 +26,7 @@ class Program
                 string[] s = sr.ReadLine().Split(" "); //szétszedi a szöveget szóközönként
                 //adatokat megfelelő típusra alakítjuk
                 string azon = s[0];
-                DateTime ido = Convert.ToDateTime(s[1]);
+                DateTime ido = Convert.ToDateTime(s[1]); //aktuális dátumra konvertálja, így a hatos feladatban meg kell adni az évet, hónapot, napot is, nem lehet 1, 1, 1
                 int kod = Convert.ToInt32(s[2]);
 
                 tevekenysegek.Add(new Tevekenyseg(azon, ido, kod)); //új tevékenység objektum létrehozása és hozzáadása a listához
@@ -57,6 +57,7 @@ class Program
 
             }
         }
+        Console.WriteLine("A fajlba kiiras megtortent");
     }
 
     static int menzan_ebedlo_db = 0; //osztályszintű változó, hogy a 4. és 5. feladatban is elérhető legyen
@@ -103,8 +104,8 @@ class Program
 
     static void HatodikFeladat()
     {
-        DateTime hatsokapunkimegy = new(1, 1, 1, 10, 50, 0); //10:50-kor surrantak ki a hátsó kapun
-        DateTime hatsokapubezar = new(1, 1, 1, 11, 00, 0); //11:00-kor zárult be a hátsó kapu
+        DateTime hatsokapunkimegy = new(2025, 04, 01, 10, 50, 0); //10:50-kor surrantak ki a hátsó kapun
+        DateTime hatsokapubezar = new(2025, 04, 01, 11, 00, 0); //11:00-kor zárult be a hátsó kapu
         Console.WriteLine("6. feladat: ");
         Console.WriteLine("Az erintett tanulok:");
         List<string> erintettek = new(); //lista az érintetteknek
