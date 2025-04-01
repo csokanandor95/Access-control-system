@@ -101,24 +101,41 @@ class Program
 
         
     }
-
     static void HatodikFeladat()
     {
-        DateTime hatsokapunkimegy = new(2025, 04, 01, 10, 50, 0); //10:50-kor surrantak ki a hátsó kapun
-        DateTime hatsokapubezar = new(2025, 04, 01, 11, 00, 0); //11:00-kor zárult be a hátsó kapu
         Console.WriteLine("6. feladat: ");
         Console.WriteLine("Az erintett tanulok:");
-        List<string> erintettek = new(); //lista az érintetteknek
-        for (int i = 0; i < tevekenysegek.Count; i++)
+
+        DateTime kilepesKezdete = new(2025, 04, 01, 10, 45, 0); // 10:45-kor kezdtek kisurranni
+        DateTime kapuZaras = new(2025, 04, 01, 10, 50, 0); // 10:50-kor zárták a hátsó kaput
+
+        HashSet<string> hatsokapunKimentTanulok = new(); // Halmaz a hátsó kapun kimentek azonosítóival (itt jobb mint a lista, mert nem a sorrend szamit, hanem az elemek egyedisége)
+
+        // 1. Lépés: Azonosítjuk, kik mentek ki a hátsó kapun 10:45 és 10:50 között
+        foreach (var tevekenyseg in tevekenysegek) //foreach itt egyszerűbb, mert csak végigmegyünk a listán
         {
-            if (tevekenysegek[i].Kod == 1 && erintettek.Contains(tevekenysegek[i].Azon) && tevekenysegek[i].Ido >= hatsokapunkimegy && tevekenysegek[i].Ido < hatsokapubezar) //ha a kód 1, azaz belépés történt, és az idő a megadott intervallumban van, és az illető korábban egyszer már bejött (volt már 1-es kódja) = késés történt
+            if (tevekenyseg.Kod == 2 && // 2-es kód = kilépés
+                tevekenyseg.Ido >= kilepesKezdete && tevekenyseg.Ido < kapuZaras)
             {
-                Console.WriteLine(tevekenysegek[i].Azon);
-                erintettek.Add(tevekenysegek[i].Azon);
+                hatsokapunKimentTanulok.Add(tevekenyseg.Azon);
             }
         }
-    }
 
+        DateTime visszajovetelKezdete = new(2025, 04, 01, 10, 50, 0); // 10:50-től kell vizsgálni a visszatérést
+        DateTime szunetVege = new(2025, 04, 01, 11, 00, 0); // 11:00-kor véget ért a szünet
+
+        // 2. Lépés: Megnézzük, hogy ezek a tanulók a főkapun jöttek-e vissza 10:50 és 11:00 között
+        foreach (var tevekenyseg in tevekenysegek)
+        {
+            if (tevekenyseg.Kod == 1 && // 1-es kód = belépés
+                hatsokapunKimentTanulok.Contains(tevekenyseg.Azon) && // Csak azokat nézzük, akik a hátsó kapun mentek ki
+                tevekenyseg.Ido >= visszajovetelKezdete && tevekenyseg.Ido <= szunetVege)
+            {
+                Console.Write(tevekenyseg.Azon + " "); // Egy sorba, szóközzel elválasztva írjuk ki
+            }
+        }
+        Console.WriteLine();
+    }
     static void HetedikFeladat()
     {
         Console.WriteLine("7. feladat: ");
