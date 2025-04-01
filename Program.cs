@@ -1,4 +1,6 @@
-﻿class Program
+﻿using System.Linq;
+
+class Program
 {
     class Tevekenyseg //1 sorban 1 tevékenység van, ezt jelképezi az osztály
     {
@@ -96,28 +98,32 @@
             Console.WriteLine("Nem voltak tobben, mint a menzan.");
         }
 
-        static void Main() //program belépési pontja, itt fogjuk meghívni a metódusokat
-        {
-            MasodikFeladat();
-            HarmadikFeladat();
-            NegyedikFeladat();
-            OtodikFeladat();
-        }
+        
     }
 
     static void HatodikFeladat()
     {
-        DateTime hatsokapuido = new(1, 1, 1, 10, 50, 0);
-        DateTime hatsokapubezar = new(1, 1, 1, 11, 00, 0);
+        DateTime hatsokapunkimegy = new(1, 1, 1, 10, 50, 0); //10:50-kor surrantak ki a hátsó kapun
+        DateTime hatsokapubezar = new(1, 1, 1, 11, 00, 0); //11:00-kor zárult be a hátsó kapu
         Console.WriteLine("6. feladat: ");
         Console.WriteLine("Az erintett tanulok:");
+        List<string> erintettek = new(); //lista az érintetteknek
         for (int i = 0; i < tevekenysegek.Count; i++)
         {
-            if (tevekenysegek[i].Kod == 1 && tevekenysegek[i].Ido > hatsokapuido && tevekenysegek[i].Ido < hatsokapubezar)
+            if (tevekenysegek[i].Kod == 1 && erintettek.Contains(tevekenysegek[i].Azon) && tevekenysegek[i].Ido >= hatsokapunkimegy && tevekenysegek[i].Ido < hatsokapubezar) //ha a kód 1, azaz belépés történt, és az idő a megadott intervallumban van, és az illető korábban egyszer már bejött (volt már 1-es kódja) = késés történt
             {
                 Console.WriteLine(tevekenysegek[i].Azon);
+                erintettek.Add(tevekenysegek[i].Azon);
             }
         }
+    }
+
+    static void Main() //program belépési pontja, itt fogjuk meghívni a metódusokat
+    {
+        MasodikFeladat();
+        HarmadikFeladat();
+        NegyedikFeladat();
+        OtodikFeladat();
     }
 }
 
