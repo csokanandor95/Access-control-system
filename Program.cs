@@ -76,7 +76,7 @@
     {
         Console.WriteLine("5. feladat:");
         int kolcsonzokDb = 0;
-        List<string> kolcsonzoDiakok = new(); //kolcsonzok listája
+        List<string> kolcsonzoDiakok = new(); //kolcsonzoknek készítűnk egy listát
         for (int i = 0; i < tevekenysegek.Count; i++)
         {
             if (tevekenysegek[i].Kod == 4 && !kolcsonzoDiakok.Contains(tevekenysegek[i].Azon)) //kizárjuk a duplikációkat
@@ -85,7 +85,7 @@
                 kolcsonzoDiakok.Add(tevekenysegek[i].Azon);
             }
         }
-        Console.WriteLine(kolcsonzokDb + " diák kolcsonzoott aznap a konyvtarban.");
+        Console.WriteLine(kolcsonzokDb + " diák kolcsonzott aznap a konyvtarban.");
 
         if (kolcsonzokDb > menzan_ebedlo_db)
         {
@@ -102,6 +102,21 @@
             HarmadikFeladat();
             NegyedikFeladat();
             OtodikFeladat();
+        }
+    }
+
+    static void HatodikFeladat()
+    {
+        DateTime hatsokapuido = new(1, 1, 1, 10, 50, 0);
+        DateTime hatsokapubezar = new(1, 1, 1, 11, 00, 0);
+        Console.WriteLine("6. feladat: ");
+        Console.WriteLine("Az erintett tanulok:");
+        for (int i = 0; i < tevekenysegek.Count; i++)
+        {
+            if (tevekenysegek[i].Kod == 1 && tevekenysegek[i].Ido > hatsokapuido && tevekenysegek[i].Ido < hatsokapubezar)
+            {
+                Console.WriteLine(tevekenysegek[i].Azon);
+            }
         }
     }
 }
