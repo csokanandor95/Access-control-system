@@ -37,8 +37,8 @@ class Program
     static void MasodikFeladat()
     {
         Console.WriteLine("2. feladat:"); // $ string interpoláció: idézőjelek közötti szövegben bele lehet ágyazni változókat vagy kifejezéseket anélkül, hogy külön kellene őket összefűzni
-        Console.WriteLine($"2. feladat: Az elso tanulo {tevekenysegek[0].Ido.Hour:02}:{tevekenysegek[0].Ido.Minute:02} -kor lepett be a fokapun. "); //2 számjegyű formátumban kell megadni az órát és a percet
-        Console.WriteLine($"2. feladat: Az utolso tanulo {tevekenysegek[tevekenysegek.Count - 1].Ido.Hour:02}:{tevekenysegek[tevekenysegek.Count - 1].Ido.Minute:02} -kor lepett be a fokapun. "); //.count-al az utolsó elem indexe megadható max algoritmus helyett
+        Console.WriteLine($"2. feladat: Az elso tanulo {tevekenysegek[0].Ido.Hour:00}:{tevekenysegek[0].Ido.Minute:00} -kor lepett be a fokapun. "); //2 számjegyű formátumban kell megadni az órát és a percet
+        Console.WriteLine($"2. feladat: Az utolso tanulo {tevekenysegek[tevekenysegek.Count - 1].Ido.Hour:00}:{tevekenysegek[tevekenysegek.Count - 1].Ido.Minute:00} -kor lepett ki a fokapun. "); //.count-al az utolsó elem indexe megadható max algoritmus helyett
     }
 
     static void HarmadikFeladat()
@@ -52,7 +52,7 @@ class Program
                 DateTime vegido = new(1, 1, 1, 8, 15, 0); //végeidő 8:15
                 if (tevekenysegek[i].Kod == 1 && tevekenysegek[i].Ido > kezdido && tevekenysegek[i].Ido <= vegido) //ha a kód 1, azaz belépés történt, és az idő a megadott intervallumban van = késés történt
                 {
-                    sw.WriteLine($"{tevekenysegek[i].Ido.Hour:02}:{tevekenysegek[i].Ido.Minute:02} {tevekenysegek[i].Azon}"); //kiírjuk a késők azonosítóját
+                    sw.WriteLine($"{tevekenysegek[i].Ido.Hour:00}:{tevekenysegek[i].Ido.Minute:00} {tevekenysegek[i].Azon}"); //kiírjuk a késők azonosítóját
                 }
 
             }
@@ -131,6 +131,11 @@ class Program
             {
                 elsoBelepes = tevekenysegek[i].Ido;
                 break; //ha megvan az első belépés, akkor kilépünk a ciklusból (nincs értelme tovább menni)
+            }
+            else if (i == tevekenysegek.Count - 1) //ha végigmegyünk a tevékenységeken és nem találjuk meg a bekért azonosítót, akkor kiírjuk, hogy nincs ilyen tanuló
+            {
+                Console.WriteLine("Nincs ilyen tanulo aznap.");
+                return; //kilépünk a metódusból
             }
         }
 
