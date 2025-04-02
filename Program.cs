@@ -32,13 +32,14 @@ class Program
                 tevekenysegek.Add(new Tevekenyseg(azon, ido, kod)); //új tevékenység objektum létrehozása és hozzáadása a listához
             }
         }
+        Console.WriteLine("1. feladat:\nAz adatok beolvasasa megtortent.");
 
     }
     static void MasodikFeladat()
     {
         Console.WriteLine("2. feladat:"); // $ string interpoláció: idézőjelek közötti szövegben bele lehet ágyazni változókat vagy kifejezéseket anélkül, hogy külön kellene őket összefűzni
-        Console.WriteLine($"2. feladat: Az elso tanulo {tevekenysegek[0].Ido.Hour:00}:{tevekenysegek[0].Ido.Minute:00} -kor lepett be a fokapun. "); //2 számjegyű formátumban kell megadni az órát és a percet
-        Console.WriteLine($"2. feladat: Az utolso tanulo {tevekenysegek[tevekenysegek.Count - 1].Ido.Hour:00}:{tevekenysegek[tevekenysegek.Count - 1].Ido.Minute:00} -kor lepett ki a fokapun. "); //.count-al az utolsó elem indexe megadható max algoritmus helyett
+        Console.WriteLine($"Az elso tanulo {tevekenysegek[0].Ido.Hour:00}:{tevekenysegek[0].Ido.Minute:00} -kor lepett be a fokapun. "); //2 számjegyű formátumban kell megadni az órát és a percet
+        Console.WriteLine($"Az utolso tanulo {tevekenysegek[tevekenysegek.Count - 1].Ido.Hour:00}:{tevekenysegek[tevekenysegek.Count - 1].Ido.Minute:00} -kor lepett ki a fokapun. "); //.count-al az utolsó elem indexe megadható max algoritmus helyett
     }
 
     static void HarmadikFeladat()
@@ -48,8 +49,8 @@ class Program
         {
             for (int i = 0; i < tevekenysegek.Count; i++) //végigmegyünk a tevékenységeken
             {
-                DateTime kezdido = new(1, 1, 1, 7, 50, 0); //kezdőidő 7:50
-                DateTime vegido = new(1, 1, 1, 8, 15, 0); //végeidő 8:15
+                DateTime kezdido = new(2025, 4, 2, 7, 50, 0); //kezdőidő 7:50
+                DateTime vegido = new(2025, 4, 2, 8, 15, 0); //végeidő 8:15
                 if (tevekenysegek[i].Kod == 1 && tevekenysegek[i].Ido > kezdido && tevekenysegek[i].Ido <= vegido) //ha a kód 1, azaz belépés történt, és az idő a megadott intervallumban van = késés történt
                 {
                     sw.WriteLine($"{tevekenysegek[i].Ido.Hour:00}:{tevekenysegek[i].Ido.Minute:00} {tevekenysegek[i].Azon}"); //kiírjuk a késők azonosítóját
@@ -57,7 +58,7 @@ class Program
 
             }
         }
-        Console.WriteLine("A fajlba kiiras megtortent");
+        Console.WriteLine("A fajlba kiiras megtortent.");
     }
 
     static int menzan_ebedlo_db = 0; //osztályszintű változó, hogy a 4. és 5. feladatban is elérhető legyen
@@ -99,43 +100,44 @@ class Program
             Console.WriteLine("Nem voltak tobben, mint a menzan.");
         }
 
-        
+
     }
     static void HatodikFeladat()
     {
-        Console.WriteLine("6. feladat: ");
-        Console.WriteLine("Az erintett tanulok:");
+        Console.WriteLine("6. feladat:");
+        Console.WriteLine("Az erintett tanulok: ");
+        List<string> tanulok = new(); //csinálunk egy listát, amiben az összes tanuló azonosítója lesz
 
-        DateTime kilepesKezdete = new(2025, 04, 01, 10, 45, 0); // 10:45-kor kezdtek kisurranni
-        DateTime kapuZaras = new(2025, 04, 01, 10, 50, 0); // 10:50-kor zárták a hátsó kaput
-
-        HashSet<string> hatsokapunKimentTanulok = new(); // Halmaz a hátsó kapun kimentek azonosítóival (itt jobb mint a lista, mert nem a sorrend szamit, hanem az elemek egyedisége)
-
-        // 1. Lépés: Azonosítjuk, kik mentek ki a hátsó kapun 10:45 és 10:50 között
-        foreach (var tevekenyseg in tevekenysegek) //foreach itt egyszerűbb, mert csak végigmegyünk a listán
+        foreach (var t in tevekenysegek) //végigmegyünk és ha még nincs benne a listában, akkor hozzáadjuk
         {
-            if (tevekenyseg.Kod == 2 && // 2-es kód = kilépés
-                tevekenyseg.Ido >= kilepesKezdete && tevekenyseg.Ido < kapuZaras)
+            if (!tanulok.Contains(t.Azon))
             {
-                hatsokapunKimentTanulok.Add(tevekenyseg.Azon);
+                tanulok.Add(t.Azon);
             }
         }
 
-        DateTime visszajovetelKezdete = new(2025, 04, 01, 10, 50, 0); // 10:50-től kell vizsgálni a visszatérést
-        DateTime szunetVege = new(2025, 04, 01, 11, 00, 0); // 11:00-kor véget ért a szünet
-
-        // 2. Lépés: Megnézzük, hogy ezek a tanulók a főkapun jöttek-e vissza 10:50 és 11:00 között
-        foreach (var tevekenyseg in tevekenysegek)
+        foreach (var tanulo in tanulok)
         {
-            if (tevekenyseg.Kod == 1 && // 1-es kód = belépés
-                hatsokapunKimentTanulok.Contains(tevekenyseg.Azon) && // Csak azokat nézzük, akik a hátsó kapun mentek ki
-                tevekenyseg.Ido >= visszajovetelKezdete && tevekenyseg.Ido <= szunetVege)
+            bool bentVan = false; //alapból nincs bent
+            DateTime kezdIdo = new(2025, 4, 2, 10, 50, 0); //kezdőidő 10:50
+            DateTime vegIdo = new(2025, 4, 2, 11, 0, 0); //végeidő 11:00
+            foreach (var t in tevekenysegek)
             {
-                Console.Write(tevekenyseg.Azon + " "); // Egy sorba, szóközzel elválasztva írjuk ki
+                if (t.Azon == tanulo)
+                {
+                    if (t.Kod == 1 && bentVan && t.Ido >= kezdIdo && t.Ido <= vegIdo) //ha a kód 1 és bent van a megadott intervallumban
+                    {
+                        Console.Write($"{t.Azon} "); //kiírjuk az azonosítót
+                    }
+                    else if (t.Kod == 1) bentVan = true; //ha a kód 1, akkor bent van
+                    else if (t.Kod == 2) bentVan = false; //ha a kód 2, akkor kint van
+                }
+                
             }
         }
         Console.WriteLine();
     }
+
     static void HetedikFeladat()
     {
         Console.WriteLine("7. feladat: ");
@@ -169,7 +171,7 @@ class Program
         }
 
         TimeSpan elteltIdo = utolsoKilepes - elsoBelepes; //az eltelt idő a két időpont különbsége
-        Console.WriteLine($"A tanulo belepese es kilepese kozott  { elteltIdo.Hours } ora es { elteltIdo.Minutes } perc telt el."  ); //kiírjuk az eltelt időt
+        Console.WriteLine($"A tanulo belepese es kilepese kozott  {elteltIdo.Hours} ora es {elteltIdo.Minutes} perc telt el."); //kiírjuk az eltelt időt
 
     }
 
@@ -184,4 +186,6 @@ class Program
         HetedikFeladat();
     }
 }
+
+       
 
