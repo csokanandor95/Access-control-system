@@ -73,8 +73,8 @@ class Program
         {
             for (int i = 0; i < tevekenysegek.Count; i++) //végigmegyünk a tevékenységeken
             {
-                DateTime kezdido = new(2025, 4, 2, 7, 50, 0); //kezdőidő 7:50
-                DateTime vegido = new(2025, 4, 2, 8, 15, 0); //végeidő 8:15
+                DateTime kezdido = new(2025, 4, 3, 7, 50, 0); //kezdőidő 7:50
+                DateTime vegido = new(2025, 4, 3, 8, 15, 0); //végeidő 8:15
                 if (tevekenysegek[i].Kod == 1 && tevekenysegek[i].Ido > kezdido && tevekenysegek[i].Ido <= vegido) //ha a kód 1, azaz belépés történt, és az idő a megadott intervallumban van = késés történt
                 {
                     sw.WriteLine($"{tevekenysegek[i].Ido.Hour:00}:{tevekenysegek[i].Ido.Minute:00} {tevekenysegek[i].Azon}"); //kiírjuk a késők azonosítóját
@@ -143,8 +143,8 @@ class Program
         foreach (var tanulo in tanulok)
         {
             bool bentVan = false; //alapból nincs bent
-            DateTime kezdIdo = new(2025, 4, 2, 10, 50, 0); //kezdőidő 10:50
-            DateTime vegIdo = new(2025, 4, 2, 11, 0, 0); //végeidő 11:00
+            DateTime kezdIdo = new(2025, 4, 3, 10, 50, 0); //kezdőidő 10:50
+            DateTime vegIdo = new(2025, 4, 3, 11, 0, 0); //végeidő 11:00
             foreach (var t in tevekenysegek)
             {
                 if (t.Azon == tanulo)
@@ -165,45 +165,54 @@ class Program
     static void HetedikFeladat()
     {
         Console.WriteLine("7. feladat: ");
-        Console.WriteLine("Kerem egy tanulo azonositojat=");
+        Console.Write("Kerem egy tanulo azonositojat: ");
 
-        string bekertAzon = Console.ReadLine(); //bekérjük egy tanuló azonosítóját
+        string bekertAzon = Console.ReadLine();
 
-        if (string.IsNullOrWhiteSpace(bekertAzon)) //ha üres a bemenet, akkor kiírjuk, hogy nem adtunk meg semmit
+        if (string.IsNullOrWhiteSpace(bekertAzon)) // Ellenőrizzük, hogy a beírt azonosító nem üres vagy csak szóközökből áll-e
         {
             Console.WriteLine("7. feladat hiba: Az azonosito nem lehet ures!");
-            return; //kilépünk a metódusból
+            return; //ha igen, kilépünk
         }
-        DateTime elsoBelepes = new(1, 1, 1);
+        
+        DateTime elsoBelepes = new(1, 1, 1); //első belépés időpontja
+        bool vanIlyenTanulo = false; //tanulo létezik-e az adatok között
 
-        for (int i = 0; i < tevekenysegek.Count; i++) //végigmegyünk a tevékenységeken
+        try
         {
-            if (tevekenysegek[i].Azon == bekertAzon) //ha egy tanuló azonosítója megegyezik a bekérttel, akkor a hozzá tartozó időt elmentjük
+            foreach (var t in tevekenysegek)
             {
-                elsoBelepes = tevekenysegek[i].Ido;
-                break; //ha megvan az első belépés, akkor kilépünk a ciklusból (nincs értelme tovább menni)
+                if (t.Azon == bekertAzon) // Ha az azonosító megegyezik a bekérttel
+                {
+                    elsoBelepes = t.Ido; // Elmentjük az első előfordulás időpontját
+                    vanIlyenTanulo = true; // Megjegyezzük, hogy létezik ez a tanuló
+                    break; // Kilépünk a ciklusból, mert megtaláltuk a tanulót
+                }
             }
-            else if (i == tevekenysegek.Count - 1) //ha végigmegyünk a tevékenységeken és nem találjuk meg a bekért azonosítót, akkor kiírjuk, hogy nincs ilyen tanuló
+
+            if (!vanIlyenTanulo)
             {
-                Console.WriteLine("Nincs ilyen tanulo aznap.");
-                return; //kilépünk a metódusból
+                Console.WriteLine("Nincs ilyen tanulo aznap."); // Ha nincs ilyen tanuló az adatokban, kiírjuk és kilépünk
+                return;
             }
+             
+            DateTime utolsoKilepes = new(1, 1, 1); // Visszafelé haladunk a listában (mert az utolsó kilépést keressük)
+            for (int i = tevekenysegek.Count - 1; i >= 0; i--)
+            {
+                if (tevekenysegek[i].Azon == bekertAzon) 
+                {
+                    utolsoKilepes = tevekenysegek[i].Ido; // Elmentjük az utolsó kilépési időpontot
+                    break;
+                }
+            }
+
+            TimeSpan elteltIdo = utolsoKilepes - elsoBelepes; // Kiszámítjuk az eltelt időt az első belépés és az utolsó kilépés között
+            Console.WriteLine($"A tanulo belepese es kilepese kozott {elteltIdo.Hours} ora es {elteltIdo.Minutes} perc telt el.");
         }
-
-        DateTime utolsoKilepes = new(1, 1, 1);
-
-        for (int i = tevekenysegek.Count - 1; i >= 0; i--) //végigmegyünk a tevékenységeken visszafelé
+        catch (Exception ex) // Ha bármi hiba van, azt jelzi
         {
-            if (tevekenysegek[i].Azon == bekertAzon) //ha egy tanuló azonosítója megegyezik a bekérttel, akkor a hozzá tartozó időt elmentjük
-            {
-                utolsoKilepes = tevekenysegek[i].Ido;
-                break; //ha megvan az utolsó kilépés, akkor kilépünk a ciklusból (nincs értelme tovább menni)
-            }
+            Console.WriteLine($"Hiba tortent a feldolgozas soran: {ex.Message}");
         }
-
-        TimeSpan elteltIdo = utolsoKilepes - elsoBelepes; //az eltelt idő a két időpont különbsége
-        Console.WriteLine($"A tanulo belepese es kilepese kozott  {elteltIdo.Hours} ora es {elteltIdo.Minutes} perc telt el."); //kiírjuk az eltelt időt
-
     }
 
     static void Main() //program belépési pontja, itt fogjuk meghívni a metódusokat
