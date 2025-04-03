@@ -166,7 +166,14 @@ class Program
     {
         Console.WriteLine("7. feladat: ");
         Console.WriteLine("Kerem egy tanulo azonositojat=");
+
         string bekertAzon = Console.ReadLine(); //bekérjük egy tanuló azonosítóját
+
+        if (string.IsNullOrWhiteSpace(bekertAzon)) //ha üres a bemenet, akkor kiírjuk, hogy nem adtunk meg semmit
+        {
+            Console.WriteLine("7. feladat hiba: Az azonosito nem lehet ures!");
+            return; //kilépünk a metódusból
+        }
         DateTime elsoBelepes = new(1, 1, 1);
 
         for (int i = 0; i < tevekenysegek.Count; i++) //végigmegyünk a tevékenységeken
