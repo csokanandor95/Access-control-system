@@ -19,20 +19,44 @@ class Program
     static List<Tevekenyseg> tevekenysegek = new(); //tevékenységek listája
     static void ElsoFeladat()
     {
-        using (StreamReader sr = new StreamReader("bedat.txt")) //fájl beolvasása + using: a fájl bezáródik a blokk végén, így nincs memória és erőforrás szivárgás
+        try //fájlmegnyitást védi
         {
-            while (!sr.EndOfStream) //while ciklussal a fájl végéig olvasunk
+            using (StreamReader sr = new StreamReader("bedat.txt")) //fájl beolvasása + using: a fájl bezáródik a blokk végén, így nincs memória és erőforrás szivárgás
             {
-                string[] s = sr.ReadLine().Split(" "); //szétszedi a szöveget szóközönként
-                //adatokat megfelelő típusra alakítjuk
-                string azon = s[0];
-                DateTime ido = Convert.ToDateTime(s[1]); //aktuális dátumra konvertálja, így a hatos feladatban meg kell adni az évet, hónapot, napot is, nem lehet 1, 1, 1
-                int kod = Convert.ToInt32(s[2]);
+                while (!sr.EndOfStream) //while ciklussal a fájl végéig olvasunk
+                {
+                    string[] s = sr.ReadLine().Split(" "); //szétszedi a szöveget szóközönként
 
-                tevekenysegek.Add(new Tevekenyseg(azon, ido, kod)); //új tevékenység objektum létrehozása és hozzáadása a listához
+                    try //sorok beolvasását figyeli
+                    {
+
+                        string azon = s[0]; //adatokat megfelelő típusra alakítjuk
+                        DateTime ido = Convert.ToDateTime(s[1]); //aktuális dátumra konvertálja, így a hatos feladatban meg kell adni az évet, hónapot, napot is, nem lehet 1, 1, 1
+                        int kod = Convert.ToInt32(s[2]);
+
+                        tevekenysegek.Add(new Tevekenyseg(azon, ido, kod)); //új tevékenység objektum létrehozása és hozzáadása a listához
+                    } 
+
+                    catch (FormatException) //ha nem megfelelő formátumú adat van
+                    {
+                        Console.WriteLine("1. feladat hiba: Hibás adatformátum a fájlban. Az adott sor kihagyásra került.");
+                    }
+                }
             }
         }
-        Console.WriteLine("1. feladat:\nAz adatok beolvasasa megtortent.");
+        catch (FileNotFoundException)
+        {
+            Console.WriteLine("1. feladat hiba: A 'bedat.txt' fájl nem található!");
+            return; //kilépünk a metódusból
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ismeretlen hiba történt: {ex.Message}");
+            return; //kilépünk a metódusból
+        }
+
+
+    Console.WriteLine("1. feladat:\nAz adatok beolvasasa megtortent.");
 
     }
     static void MasodikFeladat()
