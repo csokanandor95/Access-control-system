@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 
+//Csóka Nándor
+
 class Program
 {
     class Tevekenyseg //1 sorban 1 tevékenység van, ezt jelképezi az osztály
