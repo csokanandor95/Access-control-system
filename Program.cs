@@ -33,7 +33,7 @@ class Program
                     {
 
                         string azon = s[0]; //adatokat megfelelő típusra alakítjuk
-                        DateTime ido = Convert.ToDateTime(s[1]); //aktuális dátumra konvertálja, így a hatos feladatban meg kell adni az évet, hónapot, napot is, nem lehet 1, 1, 1
+                        DateTime ido = Convert.ToDateTime(s[1]); //aktuális dátumra konvertálja, így a hármas és hatos feladatban meg kell adni az évet, hónapot, napot is, nem lehet 1, 1, 1
                         int kod = Convert.ToInt32(s[2]);
 
                         tevekenysegek.Add(new Tevekenyseg(azon, ido, kod)); //új tevékenység objektum létrehozása és hozzáadása a listához
