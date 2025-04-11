@@ -70,13 +70,14 @@ class Program
 
     static void HarmadikFeladat()
     {
+        DateTime alap = DateTime.Now; // hogy ne kelljen kézzel változtatni a dátumot
         Console.WriteLine("3. feladat:");
         using (StreamWriter sw = new StreamWriter("kesok.txt")) //fájl írása a későkről
         {
             for (int i = 0; i < tevekenysegek.Count; i++) //végigmegyünk a tevékenységeken
             {
-                DateTime kezdido = new(2025, 4, 3, 7, 50, 0); //kezdőidő 7:50
-                DateTime vegido = new(2025, 4, 3, 8, 15, 0); //végeidő 8:15
+                DateTime kezdido = new(alap.Year, alap.Month, alap.Day, 7, 50, 0); //kezdőidő 7:50
+                DateTime vegido = new(alap.Year, alap.Month, alap.Day, 8, 15, 0); //végeidő 8:15
                 if (tevekenysegek[i].Kod == 1 && tevekenysegek[i].Ido > kezdido && tevekenysegek[i].Ido <= vegido) //ha a kód 1, azaz belépés történt, és az idő a megadott intervallumban van = késés történt
                 {
                     sw.WriteLine($"{tevekenysegek[i].Ido.Hour:00}:{tevekenysegek[i].Ido.Minute:00} {tevekenysegek[i].Azon}"); //kiírjuk a késők azonosítóját
@@ -144,9 +145,10 @@ class Program
 
         foreach (var tanulo in tanulok)
         {
+            DateTime alap = DateTime.Now; //hogy ne kelljen kézzel állítgatni
             bool bentVan = false; //alapból nincs bent
-            DateTime kezdIdo = new(2025, 4, 3, 10, 50, 0); //kezdőidő 10:50
-            DateTime vegIdo = new(2025, 4, 3, 11, 0, 0); //végeidő 11:00
+            DateTime kezdIdo = new(alap.Year, alap.Month, alap.Day, 10, 50, 0); //kezdőidő 10:50
+            DateTime vegIdo = new(alap.Year, alap.Month, alap.Day, 11, 0, 0); //végeidő 11:00
             foreach (var t in tevekenysegek)
             {
                 if (t.Azon == tanulo)
